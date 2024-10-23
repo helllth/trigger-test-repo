@@ -18,7 +18,7 @@ jobs:
           repo_owner="helllth" 
           repo_name="carma"  
           event_type="trigger-workflow" 
-          projectName=${{ github.event.inputs.project-name }}"
+          projectName="${{ github.event.inputs.project-name }}"
           target="dev"
   
           curl -L \
