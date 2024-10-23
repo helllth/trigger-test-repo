@@ -23,8 +23,6 @@ on:
         description: "Ich weiß, was ich tue, wenn ich mehrere Deployments anfordere"
         required: false
 jobs:
-  # Jobs section goes here
-jobs:
   trigger:
     runs-on: ubuntu-latest
 
