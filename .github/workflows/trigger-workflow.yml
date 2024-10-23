@@ -1,12 +1,29 @@
-name: Trigger Target Workflow
-
+name: Release Action
 on:
   workflow_dispatch:
     inputs:
-      project-name:
-        description: "Please enter a project name"
+      release-type:
+        description: "Versionsmanipulation im Collab-Projekt (eine der folgenden): patch, minor, major, prepatch, preminor, premajor, prerelease"
         required: true
-
+      project-name:
+        description: "Bitte geben Sie einen Projektnamen ein oder * für alle Projekte"
+        required: true
+      target:
+        type: choice
+        description: "Wohin soll ich deployen?"
+        options:
+          - dev
+          - live
+      i-know-what-im-doing:
+        type: boolean
+        description: "Ich weiß, was ich tue"
+        required: true
+      i-know-what-im-doing-multiple:
+        type: boolean
+        description: "Ich weiß, was ich tue, wenn ich mehrere Deployments anfordere"
+        required: false
+jobs:
+  # Jobs section goes here
 jobs:
   trigger:
     runs-on: ubuntu-latest
