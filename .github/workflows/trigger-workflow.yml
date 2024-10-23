@@ -18,7 +18,7 @@ jobs:
           repo_owner="helllth" 
           repo_name="carma"  
           event_type="trigger-workflow" 
-          versionManipulator=""
+          versionManipulator=null
           projectName="${{ github.event.inputs.project-name }}"
           actor="${{ github.actor }}"
           target="dev"
