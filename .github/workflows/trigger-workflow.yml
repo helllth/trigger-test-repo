@@ -25,7 +25,7 @@ on:
       i-know-what-im-doing-live:
         type: boolean
         description: "Ich weiß, was ich tue, wenn ich live-Deployments mache"
-        required: true
+        required: false
 jobs:
   trigger:
     runs-on: ubuntu-latest
