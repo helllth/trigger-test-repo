@@ -20,7 +20,7 @@ jobs:
           event_type="trigger-workflow" 
           versionManipulator=""
           projectName="${{ github.event.inputs.project-name }}"
-          actor="${{ github.event.actor }}"
+          actor="${{ github.actor }}"
           target="dev"
 
           echo             https://api.github.com/repos/$repo_owner/$repo_name/dispatches 
