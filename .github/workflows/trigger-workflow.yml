@@ -22,6 +22,10 @@ on:
         type: boolean
         description: "Ich weiß, was ich tue, wenn ich mehrere Deployments anfordere"
         required: false
+      i-know-what-im-doing-live:
+        type: boolean
+        description: "Ich weiß, was ich tue, wenn ich live-Deployments mache"
+        required: true
 jobs:
   trigger:
     runs-on: ubuntu-latest
