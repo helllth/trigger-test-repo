@@ -15,46 +15,19 @@ jobs:
       - name: Trigger Workflow in Another Repository
         run: |
           # Set the required variables
-          repo_owner="helllth" 
-          repo_name="carma"  
-          event_type="trigger-workflow" 
+          repo_owner="helllth"
+          repo_name="carma"
+          event_type="trigger-workflow"
           versionManipulator=""
-          projectName="${{ github.event.inputs.project-name }}"
+          projectName="${{ github.event.inputs['project-name'] }}"
           actor="${{ github.actor }}"
           target="dev"
 
-          # Dynamically construct the client_payload
+          # Dynamically construct the client_payload as a single line
           if [ -z "$versionManipulator" ]; then
-            # versionManipulator is empty, so exclude it
-            payload=$(cat <<EOF
-{
-  "event_type": "$event_type", 
-  "client_payload": {
-    "project-name": "$projectName",
-    "target": "$target",
-    "actor": "$actor",
-    "unit": false,
-    "integration": true
-  }
-}
-EOF
-)
+            payload="{\"event_type\": \"$event_type\", \"client_payload\": {\"project-name\": \"$projectName\", \"target\": \"$target\", \"actor\": \"$actor\", \"unit\": false, \"integration\": true}}"
           else
-            # versionManipulator is set, include it
-            payload=$(cat <<EOF
-{
-  "event_type": "$event_type", 
-  "client_payload": {
-    "project-name": "$projectName",
-    "target": "$target",
-    "version-manipulator": "$versionManipulator",
-    "actor": "$actor",
-    "unit": false,
-    "integration": true
-  }
-}
-EOF
-)
+            payload="{\"event_type\": \"$event_type\", \"client_payload\": {\"project-name\": \"$projectName\", \"target\": \"$target\", \"version-manipulator\": \"$versionManipulator\", \"actor\": \"$actor\", \"unit\": false, \"integration\": true}}"
           fi
 
           # Print the payload (optional, for debugging purposes)
