@@ -39,18 +39,32 @@ jobs:
             exit 1
           fi
 
-          # Validate if it's a live deploy, i-know-what-im-doing-live must be true
+          # Validate if it's a live deploy, i-know-what-im-doing-live must be true, otherwise false
           target="${{ github.event.inputs['target'] }}"
-          if [ "$target" = "live" ] && [ "${{ github.event.inputs['i-know-what-im-doing-live'] }}" != "true" ]; then
-            echo "Error: Live deploy requires you to confirm that you know what you're doing."
-            exit 1
+          if [ "$target" = "live" ]; then
+            if [ "${{ github.event.inputs['i-know-what-im-doing-live'] }}" != "true" ]; then
+              echo "Error: Live deploy requires you to confirm that you know what you're doing."
+              exit 1
+            fi
+          else
+            if [ "${{ github.event.inputs['i-know-what-im-doing-live'] }}" = "true" ]; then
+              echo "Error: The 'I know what I'm doing live' option should not be checked for non-live deployments."
+              exit 1
+            fi
           fi
 
-          # Validate if project-name=* then i-know-what-im-doing-multiple must be true
+          # Validate if project-name=* then i-know-what-im-doing-multiple must be true, otherwise false
           project_name="${{ github.event.inputs['project-name'] }}"
-          if [ "$project_name" = "*" ] && [ "${{ github.event.inputs['i-know-what-im-doing-multiple'] }}" != "true" ]; then
-            echo "Error: Deploying to all projects requires you to confirm that you know what you're doing."
-            exit 1
+          if [ "$project_name" = "*" ]; then
+            if [ "${{ github.event.inputs['i-know-what-im-doing-multiple'] }}" != "true" ]; then
+              echo "Error: Deploying to all projects requires you to confirm that you know what you're doing for multiple deployments."
+              exit 1
+            fi
+          else
+            if [ "${{ github.event.inputs['i-know-what-im-doing-multiple'] }}" = "true" ]; then
+              echo "Error: The 'I know what I'm doing multiple' option should not be checked if you are not deploying to all projects."
+              exit 1
+            fi
           fi
 
           # Validate that project-name is either * or a non-empty string
