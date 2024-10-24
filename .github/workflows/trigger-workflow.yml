@@ -53,6 +53,12 @@ jobs:
             exit 1
           fi
 
+          # Validate that project-name is either * or a non-empty string
+          if [ -z "$project_name" ] || { [ "$project_name" != "*" ] && [ -z "$project_name" ]; }; then
+            echo "Error: Project name must be either '*' or a non-empty string."
+            exit 1
+          fi
+
           echo "All checks passed."
 
       - name: Trigger Workflow in Another Repository
