@@ -31,6 +31,30 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Pre-check validations
+        run: |
+          # Validate i-know-what-im-doing is true
+          if [ "${{ github.event.inputs['i-know-what-im-doing'] }}" != "true" ]; then
+            echo "Error: You must acknowledge that you know what you're doing."
+            exit 1
+          fi
+
+          # Validate if it's a live deploy, i-know-what-im-doing-live must be true
+          target="${{ github.event.inputs['target'] }}"
+          if [ "$target" = "live" ] && [ "${{ github.event.inputs['i-know-what-im-doing-live'] }}" != "true" ]; then
+            echo "Error: Live deploy requires you to confirm that you know what you're doing."
+            exit 1
+          fi
+
+          # Validate if project-name=* then i-know-what-im-doing-multiple must be true
+          project_name="${{ github.event.inputs['project-name'] }}"
+          if [ "$project_name" = "*" ] && [ "${{ github.event.inputs['i-know-what-im-doing-multiple'] }}" != "true" ]; then
+            echo "Error: Deploying to all projects requires you to confirm that you know what you're doing."
+            exit 1
+          fi
+
+          echo "All checks passed."
+
       - name: Trigger Workflow in Another Repository
         run: |
           # Set the required variables
@@ -40,7 +64,7 @@ jobs:
           versionManipulator=""
           projectName="${{ github.event.inputs['project-name'] }}"
           actor="${{ github.actor }}"
-          target="dev"
+          target="${{ github.event.inputs['target'] }}"
 
           # Dynamically construct the client_payload as a single line
           if [ -z "$versionManipulator" ]; then
